@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        
+        <record id="action_mail_sent_feeds" model="ir.actions.client">
+            <field name="name">Sent Messages</field>
+            <field name="tag">mail.wall</field>
+            <field name="res_model">mail.message</field>
+            <field name="context">{
+                'default_model': 'res.users',
+                'default_res_id': uid,
+                'thread_model': 'res.partner',
+            }</field>
+            <field name="params" eval="&quot;{
+                'domain': [
+                    '|',   
+                    ('type', '=', 'email'), 
+                    ('type', '=', 'comment'),                
+                    ('author_id.user_ids', 'in', [uid]),
+                    
+                ],
+                'view_mailbox': True,
+                'show_compose_message': True,
+            }&quot;"/>
+            <field name="help" type="html">
+                <p>
+                    You have no sent messages!
+                </p>
+            </field>
+        </record>
+        
+        <record id="mail_sentfeeds" model="ir.ui.menu">
+          <field name="name">Sent Messages</field>
+          <field name="sequence" eval="11"/>
+          <field name="action" ref="action_mail_sent_feeds"/>
+          <field name="parent_id" ref="mail.mail_feeds"/>
+        </record>
+        
+    </data>
+</openerp>
